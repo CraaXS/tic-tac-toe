@@ -1,19 +1,21 @@
 #include <iostream>
 #include <array>
+#include <print>
 
-using std::cout, std::cin, std::string, std::endl;
+using std::cin, std::string, std::endl, std::print, std::println;
 
 const char PLAYER_X = 'X';
 const char PLAYER_O = 'O';
 const int BOARD_SIZE = 9;
 
 void printboard(std::array<char, BOARD_SIZE> &board) {
-	cout << "\nTIC TAC TOE\n";
-	cout << "===============\n";
+	println("\nTIC TAC TOE");
+	println("===============");
 	for (int i = 0; i < 9; i += 3) {
-		cout << board[i] << " | " << board[i+1] << " | " << board[i+2] << "\n";
+		// cout << board[i] << " | " << board[i+1] << " | " << board[i+2] << "\n";
+		println("{} | {} | {}", board[i], board[i+1], board[i+2]);
 		if (i < 6) {
-			cout << "--+---+--\n";
+			println("--+---+--");
 		}
 	}
 }
@@ -59,49 +61,49 @@ int main() {
 	int position;
 	while (true) {
 		printboard(board);
-		cout << "PLAYER_X to move pick a number: \n";
+		println("PLAYER_X to move pick a number: ");
 		bool moving = true;
 		while (moving) {
 			cin >> position;
 			if (position >= 1 && position <= 9) {
 				if (checkfilled(board, position)) {
-					cout << "Pick another number this number is already picked\n";
+					println("Pick another number this number is already picked");
 				} else {
 					move(board, position, PLAYER_X);
 					moving = false;
 				}
 			} else {
-				cout << "Please pick a number between 1 and 9 ONLY\n";
+				println("Please pick a number between 1 and 9 ONLY");
 			}
 		}
 		printboard(board);
 		if (checkwin(board, PLAYER_X)) {
-			cout << "Congrats player X won\n";
+			println("Congrats player X won");
 			break;
 		} else if (checkdraw(board)) {
-			cout << "It's a draw";
+			print("It's a draw");
 			break;
 		}
-		cout << "PLAYER_O to move pick a number: \n";
+		println("PLAYER_O to move pick a number: ");
 		bool moving2 = true;
 		while (moving2) {
 			cin >> position;
 			if (position >= 1 && position <= 9) {
 				if (checkfilled(board, position)) {
-					cout << "Pick another number this number is already picked\n";
+					println("Pick another number this number is already picked");
 				} else {
 					move(board, position, PLAYER_O);
 					moving2 = false;
 				}
 			} else {
-				cout << "Please pick a number between 1 and 9 ONLY\n";
+				println("Please pick a number between 1 and 9 ONLY");
 			}
 		}
 		if (checkwin(board, PLAYER_X)) {
-			cout << "Congrats player X won\n";
+			println("Congrats player X won");
 			break;
 		} else if (checkdraw(board)) {
-			cout << "It's a draw";
+			print("It's a draw");
 			break;
 		}
 	}
