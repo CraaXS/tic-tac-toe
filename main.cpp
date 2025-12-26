@@ -7,7 +7,7 @@ const char PLAYER_X = 'X';
 const char PLAYER_O = 'O';
 const int BOARD_SIZE = 9;
 
-void printboard(std::array<char, 9> &board) {
+void printboard(std::array<char, BOARD_SIZE> &board) {
 	cout << "\nTIC TAC TOE\n";
 	cout << "===============\n";
 	for (int i = 0; i < 9; i += 3) {
@@ -18,12 +18,8 @@ void printboard(std::array<char, 9> &board) {
 	}
 }
 
-bool move(std::array<char, BOARD_SIZE> &board, int position, char player) {
-	if (board[position] >= '1' && board[position] <= '9') {
-		board[position - 1] = player;
-		return true;
-	} 
-	return false;
+void move(std::array<char, BOARD_SIZE> &board, int position, char player) {
+	board[position - 1] = player;
 }
 
 bool checkfilled(std::array<char, BOARD_SIZE> &board, int position) {
@@ -60,60 +56,57 @@ bool checkdraw(std::array<char, BOARD_SIZE> &board) {
 
 int main() {
 	std::array<char, BOARD_SIZE> board = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
-	bool playing = true;
-	int position, position2;
-	while (playing) {
-		bool play = true;
-		bool play2 = true;
+	int position;
+	while (true) {
 		printboard(board);
-		while (play) {
-			cout << "Player X to move pick a number: \n";
-			bool move_ = true;
-			while (move_){
-				cin >> position;
-				if (position >= 1 && position <= 9) {
-					move_ = false;
+		cout << "PLAYER_X to move pick a number: \n";
+		bool moving = true;
+		while (moving) {
+			cin >> position;
+			if (position >= 1 && position <= 9) {
+				if (checkfilled(board, position)) {
+					cout << "Pick another number this number is already picked\n";
 				} else {
-					cout << "Invalid number please pick a number between 1 and 9: \n";
+					move(board, position, PLAYER_X);
+					moving = false;
 				}
-			}
-			if (checkfilled(board, position) == false){
-				move(board, position, PLAYER_X);
-				play = false;
 			} else {
-				cout << "This position is already taken\n"; 
+				cout << "Please pick a number between 1 and 9 ONLY\n";
 			}
 		}
 		printboard(board);
-		while (play2) {
-			cout << "Player O to move pick a number: \n";
-			bool _move = true;
-			while (_move){
-				cin >> position2;
-				if (position2 >= 1 && position2 <= 9) {
-					_move = false;
-				} else {
-					cout << "Invalid number please pick a number between 1 and 9: \n";
-				}
-			}
-			if (checkfilled(board, position2) == false){
-				move(board, position2, PLAYER_O);
-				play2 = false;
-			} else {
-				cout << "This position is already taken\n"; 
-			}
-		}
-		if (checkwin(board, PLAYER_X) == true) {
-			cout << "Player X won\n";
-			playing = false;
-		} else if (checkwin(board, PLAYER_O) == true) {
-			cout << "Player O won\n";
-			playing = false;
-		}
-		if (checkdraw(board)) {
+		if (checkwin(board, PLAYER_X)) {
+			cout << "Congrats player X won\n";
+			break;
+		} else if (checkdraw(board)) {
 			cout << "It's a draw";
-			playing = false;
+			break;
+		}
+		cout << "PLAYER_O to move pick a number: \n";
+		bool moving2 = true;
+		while (moving2) {
+			cin >> position;
+			if (position >= 1 && position <= 9) {
+				if (checkfilled(board, position)) {
+					cout << "Pick another number this number is already picked\n";
+				} else {
+					move(board, position, PLAYER_O);
+					moving2 = false;
+				}
+			} else {
+				cout << "Please pick a number between 1 and 9 ONLY\n";
+			}
+		}
+		if (checkwin(board, PLAYER_X)) {
+			cout << "Congrats player X won\n";
+			break;
+		} else if (checkdraw(board)) {
+			cout << "It's a draw";
+			break;
 		}
 	}
+
+
+
 	return 0;
 }
