@@ -1,4 +1,4 @@
-# Simple TIC TAC TOE in C++
+# Simple TIC TAC TOE in C++23
 
 I've made this while learning C++ so its really simple
 
